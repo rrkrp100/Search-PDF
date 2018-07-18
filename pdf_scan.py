@@ -4,12 +4,14 @@ import PyPDF2
 import csv
 import pandas as pd
 #import operator
-keywords=input('Enter the keywords').split()
+keywords=input('Enter the keywords').split()        #Input
 counter=dict()
-pdffile=open('JavaBasics-notes.pdf','rb')
+
+pdffile=open('JavaBasics-notes.pdf','rb')           #Opening the pdf
 pdfReader=PyPDF2.PdfFileReader(pdffile)
 pg=pdfReader.numPages
-for i in range(pg):
+
+for i in range(pg):                                 #Searching for the keywords
     pageobj=pdfReader.getPage(i)
     page=pageobj.extractText().split(' ')
     for wrd in page:
@@ -18,10 +20,19 @@ for i in range(pg):
                 counter[wrd]+=1
             else:
                 counter[wrd]=1
-from collections import OrderedDict
+                
+                
+for i in keywords:                                  #cleaning up
+    if i not in counter.keys():
+        counter[i]=0
+        
+
+
+from collections import OrderedDict 
 
 sorted_counter= dict(OrderedDict(sorted(counter.items(), key=lambda t:t[1])))
-res = list()
+res = list()                                                        
+                                                    #Ordering the output
 for key,value in sorted_counter.items():
         print(key, value)
         res.append((key,value))
